@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Checkout PIX</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
+    button {
+      background-color: #FF6600;
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h1>PIX R$ 497,00</h1>
+  <p>Use seu app para pagar com o código PIX abaixo:</p>
+  <pre>00020101021226930014br.gov.bcb.pix... (seu código aqui)</pre>
+
+  <button id="paidBtn">Já Paguei!</button>
+
+  <script>
+    document.getElementById('paidBtn').addEventListener('click', () => {
+      // Envia mensagem para o pai (Typebot)
+      window.parent.postMessage({ type: 'pagamento_realizado' }, '*');
+    });
+  </script>
+</body>
+</html>
