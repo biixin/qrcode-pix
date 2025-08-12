@@ -1,33 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Checkout PIX</title>
+  <meta charset="UTF-8">
+  <title>PIX Copia e Cola</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
-    button {
-      background-color: #FF6600;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .pix-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 24px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .pix-container h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .pix-container p {
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .pix-code {
+      background-color: #f0f0f0;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+
+    .copy-button {
+      background-color: #FF4D00;
       color: white;
       border: none;
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      cursor: pointer;
       border-radius: 6px;
+      padding: 12px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: filter 0.2s ease;
+    }
+
+    .copy-button:hover {
+      filter: brightness(90%);
+    }
+
+    .copy-button:active {
+      filter: brightness(75%);
+    }
+
+    .copy-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
     }
   </style>
 </head>
 <body>
-  <h1>PIX R$ 497,00</h1>
-  <p>Use seu app para pagar com o código PIX abaixo:</p>
-  <pre>00020101021226930014br.gov.bcb.pix... (seu código aqui)</pre>
 
-  <button id="paidBtn">Já Paguei!</button>
+  <div class="pix-container">
+    <h2>Valor total: <strong>R$ 497,00</strong></h2>
+    <p>No seu app, pague com a opção <strong>PIX Copia e Cola</strong></p>
+    <div class="pix-code" id="pixCode">
+      00020101021226930014br.gov.bcb.pix2571qrcode
+    </div>
+    <button class="copy-button" onclick="copyPixCode()">
+      <svg class="copy-icon" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/></svg>
+      COPIAR
+    </button>
+  </div>
 
   <script>
-    document.getElementById('paidBtn').addEventListener('click', () => {
-      // Envia mensagem para o pai (Typebot)
-      window.parent.postMessage({ type: 'pagamento_realizado' }, '*');
-    });
+    function copyPixCode() {
+      const text = document.getElementById('pixCode').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Código PIX copiado!");
+      });
+    }
   </script>
+
 </body>
 </html>
