@@ -91,7 +91,7 @@
   <script>
     // Pega o valor do query param pixcode
     const params = new URLSearchParams(window.location.search);
-    const pixcode = params.get('pixcode') || "00020101021226930014br.gov.bcb.pix2571qrcode"; // valor padrão
+    const pixcode = params.get('pixcode') || "wrong code"; // valor padrão
 
     // Insere o código na div
     document.getElementById('pixCode').innerText = pixcode;
