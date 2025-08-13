@@ -92,19 +92,40 @@
     </button>
   </div>
 
+  
+  
   <script>
-    // Pega o valor do query param pixcode
-    const params = new URLSearchParams(window.location.search);
-    const pixcode = params.get('pixcode') || "wrong code"; // valor padrão
-
-    // Insere o código na div
-    document.getElementById('pixCode').innerText = pixcode;
-
-    // Função copiar texto
     function copyPixCode() {
-      navigator.clipboard.writeText(pixcode).then(() => {
+      const pixcode = document.getElementById('pix-code').value;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(pixcode).then(() => {
+          alert("Código PIX copiado!");
+        }).catch(() => {
+          fallbackCopyText(pixcode);
+        });
+      } else {
+        fallbackCopyText(pixcode);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand('copy');
         alert("Código PIX copiado!");
-      });
+      } catch (err) {
+        alert("Falha ao copiar o código PIX.");
+      }
+
+      document.body.removeChild(textArea);
     }
   </script>
 
