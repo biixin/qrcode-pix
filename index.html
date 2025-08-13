@@ -45,12 +45,10 @@
       padding: 10px;
       font-size: 13px;
       margin-bottom: 16px;
-    
       white-space: nowrap;     /* força o texto a ficar numa linha só */
       overflow-x: hidden;      /* esconde a barra de rolagem horizontal */
       text-overflow: ellipsis; /* opcional: mostra "..." se o texto for maior que o container */
     }
-
 
     .copy-button {
       background-color: #FF4D00;
@@ -82,68 +80,87 @@
       width: 16px;
       height: 16px;
     }
+
+    .qr-code {
+      margin-bottom: 16px;
+      max-width: 200px;
+      max-height: 200px;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 
   <div class="pix-container">
+    <!-- Aqui vai o QR Code, que será inserido dinamicamente -->
+    <img class="qr-code" id="qrCodeImage" alt="QR Code" />
+
     <p>No seu app, pague com a opção <strong>PIX Copia e Cola</strong></p>
+    
+    <!-- Código PIX -->
     <div class="pix-code" id="pixCode">
       00020101021226930014br.gov.bcb.pix2571qrcode
     </div>
+    
     <button class="copy-button" onclick="copyPixCode()">
       <svg class="copy-icon" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/></svg>
       COPIAR
     </button>
   </div>
 
-  
-  
   <script>
-  // 1. PEGAR O PIXCODE DA URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const pixCodeFromUrl = urlParams.get("pixcode");
+    // 1. PEGAR O PIXCODE DA URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const pixCodeFromUrl = urlParams.get("pixcode");  // Para o código PIX
+    const qrCodeBase64 = urlParams.get("qrcode");     // Para o código QR em Base64
 
-  // 2. SE EXISTIR, INSERE O VALOR NO HTML
-  if (pixCodeFromUrl) {
-    const pixElement = document.getElementById("pixCode");
-    pixElement.innerText = decodeURIComponent(pixCodeFromUrl);
-  }
+    // 2. SE EXISTIR, INSERE O VALOR DO PIXCODE NO HTML
+    if (pixCodeFromUrl) {
+      const pixElement = document.getElementById("pixCode");
+      pixElement.innerText = decodeURIComponent(pixCodeFromUrl);
+    }
 
-  // 3. FUNÇÃO DE COPIAR MANTÉM A MESMA
-  function copyPixCode() {
-    const pixcode = document.getElementById('pixCode').innerText;
+    // 3. SE EXISTIR, EXIBE A IMAGEM DO QR CODE
+    if (qrCodeBase64) {
+      const qrCodeImage = document.getElementById("qrCodeImage");
+      qrCodeImage.src = decodeURIComponent(qrCodeBase64);  // Setando a imagem base64 como src
+    }
 
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(pixcode).then(() => {
-        alert("Código PIX copiado!");
-      }).catch(() => {
+    // 4. FUNÇÃO DE COPIAR O CÓDIGO PIX
+    function copyPixCode() {
+      const pixcode = document.getElementById('pixCode').innerText;
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(pixcode).then(() => {
+          alert("Código PIX copiado!");
+        }).catch(() => {
+          fallbackCopyText(pixcode);
+        });
+      } else {
         fallbackCopyText(pixcode);
-      });
-    } else {
-      fallbackCopyText(pixcode);
-    }
-  }
-
-  function fallbackCopyText(text) {
-    const textArea = document.createElement("textarea");
-    textArea.value = text;
-    textArea.style.position = "fixed";
-    textArea.style.left = "-999999px";
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-
-    try {
-      document.execCommand('copy');
-      alert("Código PIX copiado!");
-    } catch (err) {
-      alert("Falha ao copiar o código PIX.");
+      }
     }
 
-    document.body.removeChild(textArea);
-  }
-</script>
+    // 5. FUNÇÃO DE COPIAR EM CASO DE ERRO
+    function fallbackCopyText(text) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand('copy');
+        alert("Código PIX copiado!");
+      } catch (err) {
+        alert("Falha ao copiar o código PIX.");
+      }
+
+      document.body.removeChild(textArea);
+    }
+  </script>
 
 </body>
 </html>
