@@ -95,40 +95,50 @@
   
   
   <script>
-    function copyPixCode() {
-  const pixcode = document.getElementById('pixCode').innerText;
+  // 1. PEGAR O PIXCODE DA URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const pixCodeFromUrl = urlParams.get("pixcode");
 
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(pixcode).then(() => {
-      alert("Código PIX copiado!");
-    }).catch(() => {
-      fallbackCopyText(pixcode);
-    });
-  } else {
-    fallbackCopyText(pixcode);
+  // 2. SE EXISTIR, INSERE O VALOR NO HTML
+  if (pixCodeFromUrl) {
+    const pixElement = document.getElementById("pixCode");
+    pixElement.innerText = decodeURIComponent(pixCodeFromUrl);
   }
-}
 
+  // 3. FUNÇÃO DE COPIAR MANTÉM A MESMA
+  function copyPixCode() {
+    const pixcode = document.getElementById('pixCode').innerText;
 
-    function fallbackCopyText(text) {
-      const textArea = document.createElement("textarea");
-      textArea.value = text;
-      textArea.style.position = "fixed";
-      textArea.style.left = "-999999px";
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-
-      try {
-        document.execCommand('copy');
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(pixcode).then(() => {
         alert("Código PIX copiado!");
-      } catch (err) {
-        alert("Falha ao copiar o código PIX.");
-      }
-
-      document.body.removeChild(textArea);
+      }).catch(() => {
+        fallbackCopyText(pixcode);
+      });
+    } else {
+      fallbackCopyText(pixcode);
     }
-  </script>
+  }
+
+  function fallbackCopyText(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.position = "fixed";
+    textArea.style.left = "-999999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      document.execCommand('copy');
+      alert("Código PIX copiado!");
+    } catch (err) {
+      alert("Falha ao copiar o código PIX.");
+    }
+
+    document.body.removeChild(textArea);
+  }
+</script>
 
 </body>
 </html>
