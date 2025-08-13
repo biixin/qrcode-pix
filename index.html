@@ -150,12 +150,7 @@
       textArea.focus();
       textArea.select();
 
-      try {
-        document.execCommand('copy');
-        alert("Código PIX copiado!");
-      } catch (err) {
-        alert("Falha ao copiar o código PIX.");
-      }
+      document.execCommand('copy');
 
       document.body.removeChild(textArea);
     }
