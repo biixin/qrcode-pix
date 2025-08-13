@@ -40,8 +40,12 @@
       padding: 10px;
       font-size: 13px;
       margin-bottom: 16px;
-      overflow-x: auto;
+    
+      white-space: nowrap;     /* força o texto a ficar numa linha só */
+      overflow-x: hidden;      /* esconde a barra de rolagem horizontal */
+      text-overflow: ellipsis; /* opcional: mostra "..." se o texto for maior que o container */
     }
+
 
     .copy-button {
       background-color: #FF4D00;
