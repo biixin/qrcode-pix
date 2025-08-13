@@ -96,18 +96,19 @@
   
   <script>
     function copyPixCode() {
-      const pixcode = document.getElementById('pix-code').value;
+  const pixcode = document.getElementById('pixCode').innerText;
 
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(pixcode).then(() => {
-          alert("Código PIX copiado!");
-        }).catch(() => {
-          fallbackCopyText(pixcode);
-        });
-      } else {
-        fallbackCopyText(pixcode);
-      }
-    }
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(pixcode).then(() => {
+      alert("Código PIX copiado!");
+    }).catch(() => {
+      fallbackCopyText(pixcode);
+    });
+  } else {
+    fallbackCopyText(pixcode);
+  }
+}
+
 
     function fallbackCopyText(text) {
       const textArea = document.createElement("textarea");
