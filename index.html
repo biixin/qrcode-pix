@@ -89,9 +89,16 @@
   </div>
 
   <script>
+    // Pega o valor do query param pixcode
+    const params = new URLSearchParams(window.location.search);
+    const pixcode = params.get('pixcode') || "00020101021226930014br.gov.bcb.pix2571qrcode"; // valor padrão
+
+    // Insere o código na div
+    document.getElementById('pixCode').innerText = pixcode;
+
+    // Função copiar texto
     function copyPixCode() {
-      const text = document.getElementById('pixCode').innerText;
-      navigator.clipboard.writeText(text).then(() => {
+      navigator.clipboard.writeText(pixcode).then(() => {
         alert("Código PIX copiado!");
       });
     }
